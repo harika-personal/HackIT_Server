@@ -31,7 +31,7 @@ function UserRoutes(app) {
   const deleteUser = async (req, res) => { };
   const findAllUsers = async (req, res) => {
     const users = await dao.findAllUsers();
-    console.log("users api call", res)
+    //console.log("users api call", res)
     res.json(users);
   };
   const findUserById = async (req, res) => { };

@@ -24,5 +24,5 @@ const userSchema = new mongoose.Schema({
       enum: ["user", "admin", "organizer"],
       default: "user" }
   },
-  { collection: "users" });
+  { collection: "Users" });
 export default userSchema;
