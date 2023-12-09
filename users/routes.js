@@ -48,9 +48,9 @@ function UserRoutes(app) {
   };
   
   const signup = async (req, res) => {
-    console.log("UUUSER",req.body)
     const user = await dao.findUserByUsername(
       req.body.username);
+      
     if (user) {
       res.status(400).json(
         { message: "Username already taken" });
@@ -60,6 +60,7 @@ function UserRoutes(app) {
 
     res.json(currentUser);
   };
+
   const signin = async (req, res) => {
     // Your existing signin logic
     res.json("hahah");

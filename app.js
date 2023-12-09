@@ -16,6 +16,7 @@ config.api_key = apiKey;
 config.timeout = 60000;
 
 const app = express()
+app.use(express.json());
 
 app.use(cors());
 const response = await getJson({
