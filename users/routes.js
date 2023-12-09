@@ -3,7 +3,7 @@ import * as dao from "./dao.js";
 //import { ObjectID } from 'mongodb'; // Import ObjectID for MongoDB
 
 // Hardcoded user data for demonstration purposes
-const hardcodedUserData = {
+/* const hardcodedUserData = {
   _id:"111", // You can use ObjectID for unique identifiers in MongoDB
   username: 'hardcodedUser',
   password: 'hardcodedPassword',
@@ -19,7 +19,7 @@ const hardcodedUserData = {
     address: '123 Street'
   }
 };
-
+ */
 function UserRoutes(app) {
   const createUser = async (req, res) => {
     const user = await dao.createUser(req.body);
@@ -38,7 +38,7 @@ function UserRoutes(app) {
   const updateUser = async (req, res) => {
     try {
       // Perform the update operation with hardcoded data
-      const result = await dao.updateUserById(hardcodedUserData._id, hardcodedUserData);
+     // const result = await dao.updateUserById(hardcodedUserData._id, hardcodedUserData);
 
       res.json(result);
     } catch (error) {
@@ -46,7 +46,20 @@ function UserRoutes(app) {
       res.status(500).json({ message: 'Internal server error' });
     }
   };
-  const signup = async (req, res) => { };
+  
+  const signup = async (req, res) => {
+    console.log("UUUSER",req.body)
+    const user = await dao.findUserByUsername(
+      req.body.username);
+    if (user) {
+      res.status(400).json(
+        { message: "Username already taken" });
+    }
+    const currentUser = await dao.createUser(req.body);
+   // req.session['currentUser'] = currentUser;
+
+    res.json(currentUser);
+  };
   const signin = async (req, res) => {
     // Your existing signin logic
     res.json("hahah");

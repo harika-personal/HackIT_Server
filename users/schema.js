@@ -8,7 +8,7 @@ const addressSchema = new mongoose.Schema({
   });
   
 const userSchema = new mongoose.Schema({
-    _id: String,
+    // _id: String,
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     firstName: String,
