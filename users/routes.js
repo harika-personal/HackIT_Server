@@ -3,7 +3,7 @@ import * as dao from "./dao.js";
 //import { ObjectID } from 'mongodb'; // Import ObjectID for MongoDB
 
 // Hardcoded user data for demonstration purposes
-const hardcodedUserData = {
+/* const hardcodedUserData = {
   _id:"111", // You can use ObjectID for unique identifiers in MongoDB
   username: 'hardcodedUser',
   password: 'hardcodedPassword',
@@ -19,7 +19,7 @@ const hardcodedUserData = {
     address: '123 Street'
   }
 };
-
+ */
 function UserRoutes(app) {
   const createUser = async (req, res) => {
     const user = await dao.createUser(req.body);
@@ -38,7 +38,7 @@ function UserRoutes(app) {
   const updateUser = async (req, res) => {
     try {
       // Perform the update operation with hardcoded data
-      const result = await dao.updateUserById(hardcodedUserData._id, hardcodedUserData);
+     // const result = await dao.updateUserById(hardcodedUserData._id, hardcodedUserData);
 
       res.json(result);
     } catch (error) {
