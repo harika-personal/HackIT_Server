@@ -3,6 +3,7 @@ import express from 'express';
 import {config,  getJson } from "serpapi";
 import mongoose from "mongoose";
 import UserRoutes from "./users/routes.js";
+import EventRoutes from "./events/routes.js";
 import cors from "cors";
 
 
@@ -35,5 +36,6 @@ await getJson({ engine: "google", q: "coffee" }); // uses the API key defined in
 //console.log(response);
 
 UserRoutes(app);
+EventRoutes(app);
 
 app.listen(4000)
