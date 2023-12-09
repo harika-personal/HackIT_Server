@@ -17,13 +17,17 @@ config.timeout = 60000;
 
 const app = express()
 
-app.use(cors());
+app.use(cors({
+  credentials:true,
+  origin:"http://localhost:3000"
+}));
 const response = await getJson({
   engine: "google",
   api_key: apiKey, // Get your API_KEY from https://serpapi.com/manage-api-key
   q: "coffee",
   location: "Austin, Texas",
 });
+app.use(express.json());
 app.get('/', (req, res) => {res.send('HackIt server is up and running!')})
 await getJson({ engine: "google", q: "coffee" }); // uses the API key defined in the config
 // await getJson({ engine: "google", api_key: API_KEY_2, q: "coffee" }); // API_KEY_2 will be used
