@@ -3,18 +3,23 @@ import * as dao from "./dao.js";
 //import { ObjectID } from 'mongodb'; // Import ObjectID for MongoDB
 
 function EventRoutes(app) {
-  console.log("In event routes");
+ // console.log("In event routes");
   const createEvent = async (req, res) => {
     const event = await dao.createEvent(req.body);
     res.json(event);
   };
 
   const findAllEvents = async (req, res) => {
-    console.log("In find all events");
-    const events = await dao.findAllEvents();
-    console.log(events);
-    res.json(events);
+    try {
+      const events = await dao.findAllEvents();
+      console.log("The events are", events);
+      res.json(events);
+    } catch (error) {
+      console.error("Error fetching events:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
   };
+  
 
   // Add more event-related routes as needed
 

@@ -13,7 +13,6 @@ Dotenv.config();
 const apiKey = "9d2740883f3be67dd1b6ec3df3432d42713da26fc4bb4dbbed8b7412c7efb385";
 const CONNECTION_STRING = process.env.DB_CONNECTION_STRING
 mongoose.connect(CONNECTION_STRING, {dbName: 'HackIt'});
-
 config.api_key = apiKey;
 config.timeout = 60000;
 
