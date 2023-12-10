@@ -34,7 +34,10 @@ function UserRoutes(app) {
     //console.log("users api call", res)
     res.json(users);
   };
-  const findUserById = async (req, res) => { };
+  const findUserById = async (req, res) => {
+    const user = await dao.findUserById(req.params.userId);
+    res.json(user);
+  };
   const updateUser = async (req, res) => {
     try {
       // Perform the update operation with hardcoded data
@@ -62,9 +65,15 @@ function UserRoutes(app) {
   };
 
   const signin = async (req, res) => {
-    // Your existing signin logic
-    res.json("hahah");
+    const { username, password } = req.body;
+    console.log("SIGNINuss", username)
+    const currentUser = await dao.findUserByCredentials(username, password);
+    console.log("vvvvv",currentUser)
+    //req.session['currentUser'] = currentUser;
+
+    res.json(currentUser);
   };
+
   const signout = (req, res) => { };
   const account = async (req, res) => { };
 
