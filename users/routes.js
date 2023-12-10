@@ -34,7 +34,10 @@ function UserRoutes(app) {
     //console.log("users api call", res)
     res.json(users);
   };
-  const findUserById = async (req, res) => { };
+  const findUserById = async (req, res) => {
+    const user = await dao.findUserById(req.params.userId);
+    res.json(user);
+  };
   const updateUser = async (req, res) => {
     try {
       // Perform the update operation with hardcoded data
@@ -56,17 +59,30 @@ function UserRoutes(app) {
         { message: "Username already taken" });
     }
     const currentUser = await dao.createUser(req.body);
-   // req.session['currentUser'] = currentUser;
+   req.session['currentUser'] = currentUser;
 
     res.json(currentUser);
   };
 
   const signin = async (req, res) => {
-    // Your existing signin logic
-    res.json("hahah");
+    const { username, password } = req.body;
+    console.log("SIGNINuss", username)
+    const currentUser = await dao.findUserByCredentials(username, password);
+    console.log("vvvvv",currentUser)
+    req.session['currentUser'] = currentUser;
+
+    res.json(currentUser);
   };
-  const signout = (req, res) => { };
-  const account = async (req, res) => { };
+
+   const signout = (req, res) => {
+    //currentUser = null;
+    req.session.destroy();
+    res.json(200);
+  };
+
+  const account = async (req, res) => {
+    res.json(req.session['currentUser']);
+  }; 
 
   // Define your routes
   app.post("/api/users", createUser);

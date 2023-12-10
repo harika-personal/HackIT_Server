@@ -37,8 +37,6 @@ function EventRoutes(app) {
     }
   };
 
-  // ... (previous code)
-
   app.post("/api/events", createEvent);
 
   // Add more event-related routes as needed
