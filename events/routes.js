@@ -23,7 +23,7 @@ function EventRoutes(app) {
   const findEventById = async (req, res) => {
     try {
       const event = await dao.findEventById(req.params.eventId);
-      console.log("The events are", event);
+     // console.log("The events are", event);
       res.json(event);
     } catch (error) {
       console.error("Error fetching event details:", error);

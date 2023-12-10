@@ -35,7 +35,9 @@ function UserRoutes(app) {
     res.json(users);
   };
   const findUserById = async (req, res) => {
+    console.log(req.params.userId);
     const user = await dao.findUserById(req.params.userId);
+   // console.log(user)
     res.json(user);
   };
   const updateUser = async (req, res) => {
@@ -49,7 +51,6 @@ function UserRoutes(app) {
       res.status(500).json({ message: 'Internal server error' });
     }
   };
-  
   const signup = async (req, res) => {
     const user = await dao.findUserByUsername(
       req.body.username);
@@ -66,9 +67,9 @@ function UserRoutes(app) {
 
   const signin = async (req, res) => {
     const { username, password } = req.body;
-    console.log("SIGNINuss", username)
+   // console.log("SIGNINuss", username)
     const currentUser = await dao.findUserByCredentials(username, password);
-    console.log("vvvvv",currentUser)
+   // console.log("vvvvv",currentUser)
     //req.session['currentUser'] = currentUser;
 
     res.json(currentUser);
