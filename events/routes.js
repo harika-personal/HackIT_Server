@@ -4,11 +4,6 @@ import * as dao from "./dao.js";
 
 function EventRoutes(app) {
   // console.log("In event routes");
-  const createEvent = async (req, res) => {
-    const event = await dao.createEvent(req.body);
-    res.json(event);
-  };
-
   const findAllEvents = async (req, res) => {
     try {
       const events = await dao.findAllEvents();
@@ -30,6 +25,19 @@ function EventRoutes(app) {
       res.status(500).json({ error: "Internal Server Error" });
     }
   };
+
+  const createEvent = async (req, res) => {
+    try {
+      // Create the event and send it as a JSON response
+      const event = await dao.createEvent(req.body);
+      res.json(event);
+    } catch (error) {
+      console.error("Error creating event:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  };
+
+  app.post("/api/events", createEvent);
 
   // Add more event-related routes as needed
   app.get("/api/events/:eventId", findEventById);

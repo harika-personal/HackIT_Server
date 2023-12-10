@@ -60,7 +60,8 @@ function UserRoutes(app) {
         { message: "Username already taken" });
     }
     const currentUser = await dao.createUser(req.body);
-   // req.session['currentUser'] = currentUser;
+    console.log("fv",currentUser)
+   req.session['currentUser'] = currentUser;
 
     res.json(currentUser);
   };
@@ -69,14 +70,21 @@ function UserRoutes(app) {
     const { username, password } = req.body;
    // console.log("SIGNINuss", username)
     const currentUser = await dao.findUserByCredentials(username, password);
-   // console.log("vvvvv",currentUser)
-    //req.session['currentUser'] = currentUser;
+    console.log("fr",currentUser)
+   req.session['currentUser'] = currentUser;
 
     res.json(currentUser);
   };
 
-  const signout = (req, res) => { };
-  const account = async (req, res) => { };
+   const signout = (req, res) => {
+    //currentUser = null;
+    req.session.destroy();
+    res.json(200);
+  };
+
+  const account = async (req, res) => {
+    res.json(req.session['currentUser']);
+  }; 
 
   // Define your routes
   app.post("/api/users", createUser);
