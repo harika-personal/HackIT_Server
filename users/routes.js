@@ -1,25 +1,7 @@
 // Import the necessary modules
 import * as dao from "./dao.js";
-//import { ObjectID } from 'mongodb'; // Import ObjectID for MongoDB
+let currentUser = null;
 
-// Hardcoded user data for demonstration purposes
-/* const hardcodedUserData = {
-  _id:"111", // You can use ObjectID for unique identifiers in MongoDB
-  username: 'hardcodedUser',
-  password: 'hardcodedPassword',
-  firstName: 'John',
-  lastName: 'Doe',
-  email: 'john.doe@example.com',
-  dob: new Date('1990-01-01'),
-  role: 'user',
-  address: {
-    city: 'Cityville',
-    country: 'Countryland',
-    postalCode: '12345',
-    address: '123 Street'
-  }
-};
- */
 function UserRoutes(app) {
   const createUser = async (req, res) => {
     const user = await dao.createUser(req.body);
@@ -34,12 +16,15 @@ function UserRoutes(app) {
     //console.log("users api call", res)
     res.json(users);
   };
+
   const findUserById = async (req, res) => {
-    console.log(req.params.userId);
-    const user = await dao.findUserById(req.params.userId);
-   // console.log(user)
+    console.log("SSS",req)
+    console.log("SSSB",req.userId)
+    console.log("SSSBB",req.params.userId)//getting undefined for req.params.userId
+    const user = await dao.findUserById(req.userId);
     res.json(user);
   };
+
   const updateUser = async (req, res) => {
     try {
       // Perform the update operation with hardcoded data
@@ -61,7 +46,7 @@ function UserRoutes(app) {
     }
     const currentUser = await dao.createUser(req.body);
     console.log("fv",currentUser)
-   req.session['currentUser'] = currentUser;
+   //req.session['currentUser'] = currentUser;
 
     res.json(currentUser);
   };
@@ -71,14 +56,14 @@ function UserRoutes(app) {
    // console.log("SIGNINuss", username)
     const currentUser = await dao.findUserByCredentials(username, password);
     console.log("snighdhaBose",currentUser)
-   req.session['currentUser'] = currentUser;
+   //req.session['currentUser'] = currentUser;
 
     res.json(currentUser);
   };
 
    const signout = (req, res) => {
-    //currentUser = null;
-    req.session.destroy();
+    currentUser = null;
+   // req.session.destroy();
     res.json(200);
   };
 
