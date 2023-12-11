@@ -27,18 +27,20 @@ function UserRoutes(app) {
   };
   app.post("/api/users", createUser);
 
- 
+
   const deleteUser = async (req, res) => { };
   const findAllUsers = async (req, res) => {
     const users = await dao.findAllUsers();
     //console.log("users api call", res)
     res.json(users);
   };
-  const findUserById = async (req, res) => { };
+
+  const findUserById = async (req, res) => {   };
+
   const updateUser = async (req, res) => {
     try {
       // Perform the update operation with hardcoded data
-     // const result = await dao.updateUserById(hardcodedUserData._id, hardcodedUserData);
+      // const result = await dao.updateUserById(hardcodedUserData._id, hardcodedUserData);
 
       res.json(result);
     } catch (error) {
@@ -46,9 +48,9 @@ function UserRoutes(app) {
       res.status(500).json({ message: 'Internal server error' });
     }
   };
-  
+
   const signup = async (req, res) => {
-    console.log("UUUSER",req.body)
+    console.log("UUUSER", req.body)
     const user = await dao.findUserByUsername(
       req.body.username);
     if (user) {
@@ -56,7 +58,7 @@ function UserRoutes(app) {
         { message: "Username already taken" });
     }
     const currentUser = await dao.createUser(req.body);
-   // req.session['currentUser'] = currentUser;
+    // req.session['currentUser'] = currentUser;
 
     res.json(currentUser);
   };
@@ -66,6 +68,8 @@ function UserRoutes(app) {
   };
   const signout = (req, res) => { };
   const account = async (req, res) => { };
+
+  
 
   // Define your routes
   app.post("/api/users", createUser);
@@ -77,6 +81,18 @@ function UserRoutes(app) {
   app.post("/api/users/signin", signin);
   app.post("/api/users/signout", signout);
   app.post("/api/users/account", account);
+
+  //trying to get data into profile page
+  const fetchCurrentUserData = async (req, res) => {
+
+    const {userId} = req.body;
+    console.log("**",req.body.userId);
+    const user = await dao.findUserById(req.body.userId);
+    console.log(user);
+    res.json(user);
+  };
+  app.post("/api/users/currentUser", fetchCurrentUserData);
+
 }
 
 export default UserRoutes;
