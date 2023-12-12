@@ -18,60 +18,68 @@ function UserRoutes(app) {
   };
 
   const findUserById = async (req, res) => {
-    console.log("SSS",req)
-    console.log("SSSB",req.userId)
-    console.log("SSSBB",req.params.userId)//getting undefined for req.params.userId
+    console.log("SSS", req)
+    console.log("SSSB", req.userId)
+    console.log("SSSBB", req.params.userId)//getting undefined for req.params.userId
     const user = await dao.findUserById(req.userId);
     res.json(user);
   };
 
   const updateUser = async (req, res) => {
     try {
-      // Perform the update operation with hardcoded data
-      // const result = await dao.updateUserById(hardcodedUserData._id, hardcodedUserData);
-
-      res.json(result);
+      const { userId } = req.params;
+      const status = await dao.updateUser(userId, req.body);
+      currentUser = await dao.findUserById(userId);
+      res.json(currentUser);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Internal server error' });
     }
   };
+
+
+
+
+
+
+
+
   const signup = async (req, res) => {
     const user = await dao.findUserByUsername(
       req.body.username);
-      
+
     if (user) {
       res.status(400).json(
         { message: "Username already taken" });
     }
     const currentUser = await dao.createUser(req.body);
-    console.log("fv",currentUser)
-   //req.session['currentUser'] = currentUser;
+    console.log("fv", currentUser)
+    //req.session['currentUser'] = currentUser;
 
     res.json(currentUser);
   };
 
   const signin = async (req, res) => {
     const { username, password } = req.body;
-   // console.log("SIGNINuss", username)
+    // console.log("SIGNINuss", username)
     const currentUser = await dao.findUserByCredentials(username, password);
-    console.log("snighdhaBose",currentUser)
-   //req.session['currentUser'] = currentUser;
+    console.log("snighdhaBose", currentUser)
+    //req.session['currentUser'] = currentUser;
 
     res.json(currentUser);
   };
 
-   const signout = (req, res) => {
+  const signout = (req, res) => {
     currentUser = null;
-   // req.session.destroy();
+    // req.session.destroy();
     res.json(200);
   };
 
   const account = async (req, res) => {
     res.json(req.session['currentUser']);
-  }; 
+  };
 
-  
+
 
   // Define your routes
   app.post("/api/users", createUser);
@@ -87,10 +95,10 @@ function UserRoutes(app) {
   //trying to get data into profile page
   const fetchCurrentUserData = async (req, res) => {
 
-    const {userId} = req.body;
-    console.log("**",req.body.userId);
-    const user = await dao.findUserById(req.body.userId);
-    console.log(user);
+    const { userid } = req.body;
+    console.log("**", req.body.userid);
+    const user = await dao.findUserById(req.body.userid);
+    // console.log(user);
     res.json(user);
   };
   app.post("/api/users/currentUser", fetchCurrentUserData);
