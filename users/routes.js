@@ -1,25 +1,7 @@
 // Import the necessary modules
 import * as dao from "./dao.js";
-//import { ObjectID } from 'mongodb'; // Import ObjectID for MongoDB
+let currentUser = null;
 
-// Hardcoded user data for demonstration purposes
-/* const hardcodedUserData = {
-  _id:"111", // You can use ObjectID for unique identifiers in MongoDB
-  username: 'hardcodedUser',
-  password: 'hardcodedPassword',
-  firstName: 'John',
-  lastName: 'Doe',
-  email: 'john.doe@example.com',
-  dob: new Date('1990-01-01'),
-  role: 'user',
-  address: {
-    city: 'Cityville',
-    country: 'Countryland',
-    postalCode: '12345',
-    address: '123 Street'
-  }
-};
- */
 function UserRoutes(app) {
   const createUser = async (req, res) => {
     const user = await dao.createUser(req.body);
@@ -35,7 +17,13 @@ function UserRoutes(app) {
     res.json(users);
   };
 
-  const findUserById = async (req, res) => {   };
+  const findUserById = async (req, res) => {
+    console.log("SSS",req)
+    console.log("SSSB",req.userId)
+    console.log("SSSBB",req.params.userId)//getting undefined for req.params.userId
+    const user = await dao.findUserById(req.userId);
+    res.json(user);
+  };
 
   const updateUser = async (req, res) => {
     try {
@@ -48,26 +36,40 @@ function UserRoutes(app) {
       res.status(500).json({ message: 'Internal server error' });
     }
   };
-
   const signup = async (req, res) => {
-    console.log("UUUSER", req.body)
     const user = await dao.findUserByUsername(
       req.body.username);
+      
     if (user) {
       res.status(400).json(
         { message: "Username already taken" });
     }
     const currentUser = await dao.createUser(req.body);
-    // req.session['currentUser'] = currentUser;
+    console.log("fv",currentUser)
+   //req.session['currentUser'] = currentUser;
 
     res.json(currentUser);
   };
+
   const signin = async (req, res) => {
-    // Your existing signin logic
-    res.json("hahah");
+    const { username, password } = req.body;
+   // console.log("SIGNINuss", username)
+    const currentUser = await dao.findUserByCredentials(username, password);
+    console.log("snighdhaBose",currentUser)
+   //req.session['currentUser'] = currentUser;
+
+    res.json(currentUser);
   };
-  const signout = (req, res) => { };
-  const account = async (req, res) => { };
+
+   const signout = (req, res) => {
+    currentUser = null;
+   // req.session.destroy();
+    res.json(200);
+  };
+
+  const account = async (req, res) => {
+    res.json(req.session['currentUser']);
+  }; 
 
   
 
