@@ -20,7 +20,7 @@ function UserRoutes(app) {
   const findUserById = async (req, res) => {
     console.log("SSS",req)
     console.log("SSSB",req.userId)
-    console.log("SSSBB",req.params.userId)//getting undefined for req.params.userId
+    console.log("SSSBB",req.params.userId)//getting
     const user = await dao.findUserById(req.userId);
     res.json(user);
   };
