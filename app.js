@@ -3,7 +3,7 @@ import express from 'express';
 import mongoose from "mongoose";
 import UserRoutes from "./users/routes.js";
 import EventRoutes from "./events/routes.js";
-import ExternalApiRoutes from "./ExternalApi/externalApi_routes.js"
+// import ExternalApiRoutes from "./ExternalApi/externalApi_routes.js"
 import cors from "cors";
 import session from "express-session";
 
@@ -31,6 +31,6 @@ app.get('/', (req, res) => {res.send('HackIt server is up and running!')})
 
 UserRoutes(app);
 EventRoutes(app);
-ExternalApiRoutes(app);
+// ExternalApiRoutes(app);
 app.listen(4000)
 
