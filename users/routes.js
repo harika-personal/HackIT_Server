@@ -38,12 +38,6 @@ function UserRoutes(app) {
   };
 
 
-
-
-
-
-
-
   const signup = async (req, res) => {
     const user = await dao.findUserByUsername(
       req.body.username);
