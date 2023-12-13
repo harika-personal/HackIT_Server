@@ -15,7 +15,7 @@ app.use(express.json());
 
 app.use(cors({
   credentials:true,
-  origin:"http://localhost:3000"
+  origin: process.env.FRONTEND_URL,
 }));
 const sessionOptions = {
   secret: "any string",
