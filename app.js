@@ -6,6 +6,7 @@ import EventRoutes from "./events/routes.js";
 import ExternalApiRoutes from "./ExternalApi/externalApi_routes.js"
 import cors from "cors";
 import session from "express-session";
+import UserEventRoutes from "./user_events/routes.js"
 
 const CONNECTION_STRING = process.env.DB_CONNECTION_STRING
 mongoose.connect(CONNECTION_STRING, {dbName: 'HackIt'});
@@ -32,5 +33,6 @@ app.get('/', (req, res) => {res.send('HackIt server is up and running!')})
 UserRoutes(app);
 EventRoutes(app);
 ExternalApiRoutes(app);
+UserEventRoutes(app);
 app.listen(4000)
 
