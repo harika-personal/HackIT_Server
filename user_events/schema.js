@@ -14,7 +14,7 @@ const userEventsSchema = new mongoose.Schema(
     },
     bookmarked: {
       type: Boolean,
-   //   required: true,
+      required: true,
     },
     registered: {
       type: Boolean,

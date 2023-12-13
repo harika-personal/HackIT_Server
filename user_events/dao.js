@@ -18,14 +18,18 @@ export const findEventById = async (eventId, userId) => {
     return userEvent ? userEvent.registered : false;
   };
 
+  export const getBookmarkedStatus = async (userId, eventId) => {
+    const userEvent = await model.findOne({ userId, eventId });
+    return userEvent ? userEvent.bookmarked : false;
+  };
+
   export const deRegisterForEvent = async(userId,eventId)=>{
       const response = await model.findOneAndUpdate(
         { eventId, userId },
         { $set: { registered: false } },
         { new: true }
       );
-      return response.registered;
-      
+      return response.registered; 
   }
 
   export const registerUserForEvent = async (userId, eventId) => {
@@ -37,6 +41,7 @@ export const findEventById = async (eventId, userId) => {
           userId,
           eventId,
           registered: true, 
+          bookmarked: false,
         });
       }
       else{
@@ -53,6 +58,44 @@ export const findEventById = async (eventId, userId) => {
       throw error;
     }
   };
+
+  export const bookmarkEvent = async (userId, eventId) => {
+    try {
+      const isBookmarked = await isUserRegisteredForEvent(userId, eventId);
+  
+      if (!isBookmarked) {
+        await model.create({
+          userId,
+          eventId,
+          registered: false, 
+          bookmarked: true,
+        });
+      }
+      else{
+        await model.findOneAndUpdate(
+          { eventId, userId },
+          { $set: { bookmarked: true } },
+          { new: true }
+        );
+      }
+      const isBookmarkedLater = await getBookmarkedStatus(userId, eventId);
+      return isBookmarkedLater;
+    } catch (error) {
+      console.error('Error bookmarking user for event:', error);
+      throw error;
+    }
+  };
+
+  export const deBookmarkEvent = async(userId,eventId)=>{
+    const response = await model.findOneAndUpdate(
+      { eventId, userId },
+      { $set: { bookmarked: false } },
+      { new: true }
+    );
+    return response.bookmarked; 
+}
+
+
   
   
 
