@@ -11,6 +11,13 @@ function UserEventRoutes(app) {
     }
   };
 
+  const findUserById = async (req, res) => {
+    const user = await dao.findUserById(req.params.userId);
+    res.json(user);
+  };
+  app.get("/api/userevents/:userId", findUserById);
+
+
   const findEventById = async (req, res) => {
     try {
       const event = await dao.findEventById(req.params.eventId);

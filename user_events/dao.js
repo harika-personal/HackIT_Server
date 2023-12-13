@@ -1,7 +1,9 @@
-import model from "./model.js"
+import {model} from "./model.js"
+import { userModel } from "./model.js";
 
 export const createEvent = (event) => model.create(event);
 export const findAllEvents = () => model.find();
+export const findUserById = (userId) => userModel.findById(userId);
 export const findEventById = async (eventId, userId) => {
       const userEvent = await model.findOne({ eventId, userId });
       return userEvent;
@@ -15,7 +17,6 @@ export const findEventById = async (eventId, userId) => {
     const userEvent = await model.findOne({ userId, eventId });
     return userEvent ? userEvent.registered : false;
   };
-
 
   export const deRegisterForEvent = async(userId,eventId)=>{
       const response = await model.findOneAndUpdate(
