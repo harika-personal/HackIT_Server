@@ -50,8 +50,6 @@ const findOrganizerEvents = async (req, res) => {
 };
 
 app.get("/api/events/organizer/:organizerId", findOrganizerEvents);
-
-  app.get("/api/events/organizer/:organizerId",findOrganizerEvents);
   
 
   const findEventById = async (req, res) => {
