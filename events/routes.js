@@ -1,5 +1,6 @@
 // Import the necessary modules
 import * as dao from "./dao.js";
+import mongoose from "mongoose";
 
 function EventRoutes(app) {
   const findAllEvents = async (req, res) => {
@@ -36,18 +37,20 @@ function EventRoutes(app) {
 //       res.status(500).json({ error: "Internal Server Error" });
 //     }
 //   };
-  
-  const findOrganizerEvents = async (req,res) => {
-    console.log("came in",req.params.organizerId);
-    try{
-  const events = dao.findAllOrganizerEvents({organizerId:req.params.organizerId});
-  console.log("Organizer events",events);
-  res.json(events);
-    }
-    catch(err){
-      res.status(500).json({ error: "Internal Server Error" });
-    }
+
+const findOrganizerEvents = async (req, res) => {
+  try {
+    const organizerId = new mongoose.Types.ObjectId(req.params.organizerId);
+    const events = await dao.findAllOrganizerEvents({ organizerId });
+    res.json(events);
+  } catch (err) {
+    console.error("Error fetching organizer events:", err);
+    res.status(500).json({ error: "Internal Server Error" });
   }
+};
+
+app.get("/api/events/organizer/:organizerId", findOrganizerEvents);
+
   app.get("/api/events/organizer/:organizerId",findOrganizerEvents);
   
 

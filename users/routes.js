@@ -125,7 +125,7 @@ function UserRoutes(app) {
   const fetchCurrentUserData = async (req, res) => {
 
     const { userid } = req.body;
-    console.log("**", req.body.userid);
+   // console.log("**", req.body.userid);
     const user = await dao.findUserById(req.body.userid);
     // console.log(user);
     res.json(user);
