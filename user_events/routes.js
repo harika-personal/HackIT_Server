@@ -41,17 +41,17 @@ function UserEventRoutes(app) {
 
   app.post("/api/userevents", createEvent);
 
- const registerUserForEvent =  async (req, res) => {
-      const { userId, eventId } = req.params;
-      const isRegistered = await dao.registerUserForEvent(userId, eventId);
-      res.json({ isRegistered });
+  const registerUserForEvent = async (req, res) => {
+    const { userId, eventId } = req.params;
+    const isRegistered = await dao.registerUserForEvent(userId, eventId);
+    res.json({ isRegistered });
   };
   app.post("/api/userevents/:userId/:eventId/register", registerUserForEvent);
 
-  const deRegisterForEvent = async (req,res)=>{
-    const {userId,eventId} = req.params;
-    const isDeregistered = await dao.deRegisterForEvent(userId,eventId);
-    res.json({isDeregistered});
+  const deRegisterForEvent = async (req, res) => {
+    const { userId, eventId } = req.params;
+    const isDeregistered = await dao.deRegisterForEvent(userId, eventId);
+    res.json({ isDeregistered });
   }
   app.put("/api/userevents/:userId/:eventId/deregister", deRegisterForEvent);
 
@@ -59,7 +59,7 @@ function UserEventRoutes(app) {
     try {
       const { userId, eventId } = req.params;
       const isRegistered = await dao.isUserRegisteredForEvent(userId, eventId);
-      console.log("is registered?",isRegistered);
+      console.log("is registered?", isRegistered);
       res.json({ isRegistered });
     } catch (error) {
       console.error("Error checking user registration for event:", error);
@@ -69,45 +69,55 @@ function UserEventRoutes(app) {
   app.get("/api/userevents/:userId/:eventId/isregistered", isUserRegisteredForEventRoute);
 
 
-  const userIsRegistered = async (req,res) =>{
-    const {userId,eventId} = req.params;
-    const status = await dao.getUserRegistrationStatus(userId,eventId);
+  const userIsRegistered = async (req, res) => {
+    const { userId, eventId } = req.params;
+    const status = await dao.getUserRegistrationStatus(userId, eventId);
     res.json(status);
   }
-  app.get("/api/userevents/:userId/:eventId/registerstatus",userIsRegistered );
+  app.get("/api/userevents/:userId/:eventId/registerstatus", userIsRegistered);
 
 
   const eventsRegisteredByUser = async (req, res) => {
     // console.log("Hi");
-    const {userId} = req.params;
+    const { userId } = req.params;
     // console.log(req.params);
     const response = await dao.getEventsRegisteredByUser(userId);
     // console.log(response);
     res.json(response);
   };
-  app.get("/api/users/fetchAllRegisteredEvents/:userId", eventsRegisteredByUser );
+  app.get("/api/users/fetchAllRegisteredEvents/:userId", eventsRegisteredByUser);
 
 
-  const bookmarkedStatus = async (req,res) =>{
-    const {userId,eventId} = req.params;
-    const status = await dao.getBookmarkedStatus(userId,eventId);
+  const bookmarkedStatus = async (req, res) => {
+    const { userId, eventId } = req.params;
+    const status = await dao.getBookmarkedStatus(userId, eventId);
     res.json(status);
   }
-  app.get("/api/userevents/:userId/:eventId/bookmarkstatus",bookmarkedStatus);
+  app.get("/api/userevents/:userId/:eventId/bookmarkstatus", bookmarkedStatus);
 
-  const bookmarkEvent =  async (req, res) => {
+  const bookmarkEvent = async (req, res) => {
     const { userId, eventId } = req.params;
     const isBookmarked = await dao.bookmarkEvent(userId, eventId);
     res.json({ isBookmarked });
-};
-app.post("/api/userevents/:userId/:eventId/bookmark", bookmarkEvent);
+  };
+  app.post("/api/userevents/:userId/:eventId/bookmark", bookmarkEvent);
 
-const deBookmarkEvent = async (req,res)=>{
-  const {userId,eventId} = req.params;
-  const isBookmarked = await dao.deBookmarkEvent(userId,eventId);
-  res.json({isBookmarked});
-}
-app.put("/api/userevents/:userId/:eventId/debookmark", deBookmarkEvent);
+  const deBookmarkEvent = async (req, res) => {
+    const { userId, eventId } = req.params;
+    const isBookmarked = await dao.deBookmarkEvent(userId, eventId);
+    res.json({ isBookmarked });
+  }
+  app.put("/api/userevents/:userId/:eventId/debookmark", deBookmarkEvent);
+
+  const updateRatings = async (req, res) => {
+const { userId, eventId } = req.params;
+    const { rating } = req.body;
+    const result = await dao.updateRatings(userId, eventId, rating);
+    res.json(result);
+  };
+  app.put("/api/userevents/:userId/:eventId/ratings", updateRatings);
+
+
 }
 
 export default UserEventRoutes;

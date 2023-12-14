@@ -132,6 +132,7 @@ function UserRoutes(app) {
   };
   app.post("/api/users/currentUser", fetchCurrentUserData);
 
+
 }
 
 export default UserRoutes;
