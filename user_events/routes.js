@@ -48,7 +48,6 @@ function UserEventRoutes(app) {
   };
   app.post("/api/userevents/:userId/:eventId/register", registerUserForEvent);
 
-
   const deRegisterForEvent = async (req,res)=>{
     const {userId,eventId} = req.params;
     const isDeregistered = await dao.deRegisterForEvent(userId,eventId);
@@ -89,6 +88,26 @@ function UserEventRoutes(app) {
   app.get("/api/users/fetchAllRegisteredEvents/:userId", eventsRegisteredByUser );
 
 
+  const bookmarkedStatus = async (req,res) =>{
+    const {userId,eventId} = req.params;
+    const status = await dao.getBookmarkedStatus(userId,eventId);
+    res.json(status);
+  }
+  app.get("/api/userevents/:userId/:eventId/bookmarkstatus",bookmarkedStatus);
+
+  const bookmarkEvent =  async (req, res) => {
+    const { userId, eventId } = req.params;
+    const isBookmarked = await dao.bookmarkEvent(userId, eventId);
+    res.json({ isBookmarked });
+};
+app.post("/api/userevents/:userId/:eventId/bookmark", bookmarkEvent);
+
+const deBookmarkEvent = async (req,res)=>{
+  const {userId,eventId} = req.params;
+  const isBookmarked = await dao.deBookmarkEvent(userId,eventId);
+  res.json({isBookmarked});
+}
+app.put("/api/userevents/:userId/:eventId/debookmark", deBookmarkEvent);
 }
 
 export default UserEventRoutes;

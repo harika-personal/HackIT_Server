@@ -15,8 +15,14 @@ export const isUserRegisteredForEvent = async (userId, eventId) => {
 };
 
 export const getUserRegistrationStatus = async (userId, eventId) => {
+  console.log("user,event", userId, eventId);
   const userEvent = await model.findOne({ userId, eventId });
   return userEvent ? userEvent.registered : false;
+};
+
+export const getBookmarkedStatus = async (userId, eventId) => {
+  const userEvent = await model.findOne({ userId, eventId });
+  return userEvent ? userEvent.bookmarked : false;
 };
 
 export const deRegisterForEvent = async (userId, eventId) => {
@@ -26,7 +32,6 @@ export const deRegisterForEvent = async (userId, eventId) => {
     { new: true }
   );
   return response.registered;
-
 }
 
 export const registerUserForEvent = async (userId, eventId) => {
@@ -38,6 +43,7 @@ export const registerUserForEvent = async (userId, eventId) => {
         userId,
         eventId,
         registered: true,
+        bookmarked: false,
       });
     }
     else {
@@ -55,27 +61,67 @@ export const registerUserForEvent = async (userId, eventId) => {
   }
 };
 
-export const getEventsRegisteredByUser = async (userId) => {
-  // console.log(userId);
-  const eventsRegisteredByUser = await model.find({ userId });
-  // Extract eventIds from userEvents
-  const eventIds = eventsRegisteredByUser.map((userEvent) => userEvent.eventId);
-   // Fetch event details based on eventIds from the "Events" collection
-  const eventDetails = await eventsModel.find({ _id: { $in: eventIds } });
+export const bookmarkEvent = async (userId, eventId) => {
+  try {
+    const isBookmarked = await isUserRegisteredForEvent(userId, eventId);
 
-   // Combine event details with user events
-  const combinedEvents = eventsRegisteredByUser.map((userEvent) => {
-    const eventDetail = eventDetails.find((event) => event._id.toString() === userEvent.eventId.toString());
-    return {
-      ...userEvent.toObject(),
-      eventDetail: eventDetail || null,
-    };
-  });
+    if (!isBookmarked) {
+      await model.create({
+        userId,
+        eventId,
+        registered: false,
+        bookmarked: true,
+      });
+    }
+    else {
+      await model.findOneAndUpdate(
+        { eventId, userId },
+        { $set: { bookmarked: true } },
+        { new: true }
+      );
+    }
+    const isBookmarkedLater = await getBookmarkedStatus(userId, eventId);
+    return isBookmarkedLater;
+  } catch (error) {
+    console.error('Error bookmarking user for event:', error);
+    throw error;
+  }
+};
 
-  // console.log(combinedEvents);
-  
-  return combinedEvents;
+export const deBookmarkEvent = async (userId, eventId) => {
+  const response = await model.findOneAndUpdate(
+    { eventId, userId },
+    { $set: { bookmarked: false } },
+    { new: true }
+  );
+  return response.bookmarked;
+
+
+ 
 }
+
+ export const getEventsRegisteredByUser = async (userId) => {
+    // console.log(userId);
+    const eventsRegisteredByUser = await model.find({ userId });
+    // Extract eventIds from userEvents
+    const eventIds = eventsRegisteredByUser.map((userEvent) => userEvent.eventId);
+    // Fetch event details based on eventIds from the "Events" collection
+    const eventDetails = await eventsModel.find({ _id: { $in: eventIds } });
+
+    // Combine event details with user events
+    const combinedEvents = eventsRegisteredByUser.map((userEvent) => {
+      const eventDetail = eventDetails.find((event) => event._id.toString() === userEvent.eventId.toString());
+      return {
+        ...userEvent.toObject(),
+        eventDetail: eventDetail || null,
+      };
+    });
+
+    // console.log(combinedEvents);
+
+    return combinedEvents;
+  }
+
 
 
 
