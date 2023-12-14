@@ -12,31 +12,43 @@ function EventRoutes(app) {
     }
   };
 
-  const findAllOrganizerEvents = async (req, res) => {
-    try {
-      const allEvents = await dao.findAllEvents();
-      console.log("000003", req.params.organizerId);
-      console.log("777", allEvents);
+//   const findAllOrganizerEvents = async (req, res) => {
+//     try {
+//       const allEvents = await dao.findAllEvents();
+//       console.log("000003", req.params.organizerId);
+//       console.log("777", allEvents);
   
-      // Filter events based on organizerid
-      const filteredEvents = allEvents.filter(event => {
-        console.log("HHHHIIIIIII",typeof event.organizerId, typeof req.params.organizerId);
-        //const extractedId = objectId.toString();
+//       // Filter events based on organizerid
+//       const filteredEvents = allEvents.filter(event => {
+//         console.log("HHHHIIIIIII",typeof event.organizerId, typeof req.params.organizerId);
+//         //const extractedId = objectId.toString();
 
-//console.log(extractedId);
-console.log("AAAAA",event._id);
-        console.log("BBBBB",event.organizerId);
-        return event.organizerId === req.params.organizerId;
-      });
+// //console.log(extractedId);
+// console.log("AAAAA",event._id);
+//         console.log("BBBBB",event.organizerId);
+//         return event.organizerId === req.params.organizerId;
+//       });
   
-      console.log("444", filteredEvents);
-      res.json(filteredEvents);
-    } catch (error) {
-      console.error("Error fetching events:", error);
+//       console.log("444", filteredEvents);
+//       res.json(filteredEvents);
+//     } catch (error) {
+//       console.error("Error fetching events:", error);
+//       res.status(500).json({ error: "Internal Server Error" });
+//     }
+//   };
+  
+  const findOrganizerEvents = async (req,res) => {
+    console.log("came in",req.params.organizerId);
+    try{
+  const events = dao.findAllOrganizerEvents({organizerId:req.params.organizerId});
+  console.log("Organizer events",events);
+  res.json(events);
+    }
+    catch(err){
       res.status(500).json({ error: "Internal Server Error" });
     }
-  };
-  
+  }
+  app.get("/api/events/organizer/:organizerId",findOrganizerEvents);
   
 
   const findEventById = async (req, res) => {
@@ -74,7 +86,7 @@ console.log("AAAAA",event._id);
 
   app.post("/api/events", createEvent);
   app.get("/api/events/:eventId", findEventById);
-  app.get("/api/events/organizer/:organizerId", findAllOrganizerEvents);
+  //app.get("/api/events/organizer/:organizerId", findAllOrganizerEvents);
   app.post("/api/events", createEvent);
   app.get("/api/events", findAllEvents);
 }

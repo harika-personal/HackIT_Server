@@ -25,3 +25,8 @@ export const getAllEvents = async () => {
     res.status(500).send("Internal Server Error");
   }
 };
+
+export const findAllOrganizerEvents = (organizerId) => model.find(organizerId);
+
+
+  
