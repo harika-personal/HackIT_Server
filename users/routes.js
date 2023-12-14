@@ -96,6 +96,20 @@ function UserRoutes(app) {
     }
 
   };
+  const signinAdmin = async (req, res) => {
+    const { username, password } = req.body;
+   // console.log("SIGNINuss", username)
+    const currentUser = await dao.findUserByCredentials(username, password);
+    console.log("snighdhaBose4",currentUser)
+    
+    if(currentUser && currentUser.role && currentUser.role=='admin'){
+      console.log("snighdhaBose5",currentUser.role)
+      res.json(currentUser);
+    }else{
+      res.json(null);
+    }
+
+  };
 
    const signout = (req, res) => {
     currentUser = null;
@@ -109,6 +123,7 @@ function UserRoutes(app) {
 
 
 
+
   // Define your routes
   app.post("/api/users", createUser);
   app.get("/api/users", findAllUsers);
@@ -118,6 +133,7 @@ function UserRoutes(app) {
   app.post("/api/users/signup", signup);
   app.post("/api/users/signin/user", signinUser);
   app.post("/api/users/signin/organizer", signinOrganizer);
+  app.post("/api/users/admin", signinAdmin);
   app.post("/api/users/signout", signout);
   app.post("/api/users/account", account);
 

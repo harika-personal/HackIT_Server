@@ -26,6 +26,8 @@ export const getAllEvents = async () => {
   }
 };
 
+export const deleteEvent = (eventId) => model.deleteOne({ _id: eventId });
+
 export const findAllOrganizerEvents = (organizerId) => model.find(organizerId);
 
 
