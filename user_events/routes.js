@@ -77,6 +77,18 @@ function UserEventRoutes(app) {
   }
   app.get("/api/userevents/:userId/:eventId/registerstatus",userIsRegistered );
 
+
+  const eventsRegisteredByUser = async (req, res) => {
+    // console.log("Hi");
+    const {userId} = req.params;
+    // console.log(req.params);
+    const response = await dao.getEventsRegisteredByUser(userId);
+    // console.log(response);
+    res.json(response);
+  };
+  app.get("/api/users/fetchAllRegisteredEvents/:userId", eventsRegisteredByUser );
+
+
 }
 
 export default UserEventRoutes;
