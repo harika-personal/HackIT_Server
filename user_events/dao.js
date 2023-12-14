@@ -14,6 +14,7 @@ export const findEventById = async (eventId, userId) => {
   };
 
   export const getUserRegistrationStatus = async (userId, eventId) => {
+    console.log("user,event",userId,eventId);
     const userEvent = await model.findOne({ userId, eventId });
     return userEvent ? userEvent.registered : false;
   };
@@ -67,7 +68,7 @@ export const findEventById = async (eventId, userId) => {
         await model.create({
           userId,
           eventId,
-          registered: false, 
+          registered: false,
           bookmarked: true,
         });
       }

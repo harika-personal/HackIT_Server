@@ -33,6 +33,6 @@ app.get('/', (req, res) => {res.send('HackIt server is up and running!')})
 UserRoutes(app);
 EventRoutes(app);
 // ExternalApiRoutes(app);
-// UserEventRoutes(app);
+UserEventRoutes(app);
 app.listen(4000)
 
