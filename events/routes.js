@@ -26,8 +26,10 @@ function EventRoutes(app) {
 
   app.get("/api/events/organizer/:organizerId", findOrganizerEvents);
 
-  app.get("/api/events/organizer/:organizerId", findOrganizerEvents);
+//   app.get("/api/events/organizer/:organizerId", findOrganizerEvents);
 
+// app.get("/api/events/organizer/:organizerId", findOrganizerEvents);
+  
 
   const findEventById = async (req, res) => {
     try {
@@ -62,9 +64,11 @@ function EventRoutes(app) {
   };
   app.get("/api/getEvents", getExternalEvents);
 
-  app.post("/api/events", createEvent);
+  app.post("/api/events/create", createEvent);
   app.get("/api/events/:eventId", findEventById);
-  app.post("/api/events", createEvent);
+  // app.post("/api/events", createEvent);
+  //app.get("/api/events/organizer/:organizerId", findAllOrganizerEvents);
+  //app.post("/api/events", createEvent);
   app.get("/api/events", findAllEvents);
 
   const updateEvent = async (req, res) => {
