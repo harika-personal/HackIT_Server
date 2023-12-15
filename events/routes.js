@@ -79,7 +79,7 @@ function EventRoutes(app) {
       res.json(event);
     }
     catch(error){
-      console.log("updateUser error ", error);
+      console.log("updateEvent error ", error);
       res.status(500).send("Internal Server Error");
     }
 
@@ -90,15 +90,16 @@ function EventRoutes(app) {
   const deleteEvent = async (req, res) => {
     try{
       const { eventId } = req.params;
-      const status = await dao.deleteEvent(eventId, req.body);
+      const status = await dao.deleteEvent(eventId);
+      console.log("deleteEvent ", status);
       res.json(status);
     }
     catch(error) {
-      console.log("updateUser error ", error);
+      console.log("deleteEvent error ", error);
       res.status(500).send("Internal Server Error");
     }
   };
-  app.delete("/api/event/:eventId/deleteEvent");
+  app.delete("/api/events/:eventId/deleteEvent", deleteEvent);
 
 
 }
