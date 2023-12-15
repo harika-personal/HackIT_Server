@@ -8,9 +8,6 @@ function UserRoutes(app) {
     res.json(user);
   };
   app.post("/api/users", createUser);
-
-
-  const deleteUser = async (req, res) => { };
   const findAllUsers = async (req, res) => {
     const users = await dao.findAllUsers();
     //console.log("users api call", res)
@@ -121,6 +118,24 @@ function UserRoutes(app) {
     res.json(req.session['currentUser']);
   };
 
+  const deleteUser = async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const deletedUser = await dao.findUserById(userId);
+
+      if (!deletedUser) {
+        res.status(404).json({ message: "User not found" });
+        return;
+      }
+
+      await dao.deleteUser(userId);
+      res.json(deletedUser);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  };
+
 
 
 
@@ -129,7 +144,7 @@ function UserRoutes(app) {
   app.get("/api/users", findAllUsers);
   app.get("/api/users/:userId", findUserById);
   app.put("/api/users/:userId", updateUser);
-  app.delete("/api/users/:userId", deleteUser);
+  app.delete("/api/users/:userId/deleteUser", deleteUser);
   app.post("/api/users/signup", signup);
   app.post("/api/users/signin/user", signinUser);
   app.post("/api/users/signin/organizer", signinOrganizer);
