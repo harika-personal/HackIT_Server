@@ -62,10 +62,26 @@ function EventRoutes(app) {
       res.status(500).send("Internal Server Error");
     }
   };
+
+  const deleteEvents = async (req, res) => {
+    try {
+      const { eventId } = req.params;
+      const status = await dao.deleteEvent(eventId);
+      res.json(status);
+    } catch (error) {
+      console.error("Error deleting event:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+
+  app.delete("/api/:eventId/deleteEvent", deleteEvents);
   app.get("/api/getEvents", getExternalEvents);
 
   app.post("/api/events/create", createEvent);
   app.get("/api/events/:eventId", findEventById);
+
+  
+
   // app.post("/api/events", createEvent);
   //app.get("/api/events/organizer/:organizerId", findAllOrganizerEvents);
   //app.post("/api/events", createEvent);
