@@ -15,7 +15,6 @@ export const isUserRegisteredForEvent = async (userId, eventId) => {
 };
 
 export const getUserRegistrationStatus = async (userId, eventId) => {
-  console.log("user,event", userId, eventId);
   const userEvent = await model.findOne({ userId, eventId });
   return userEvent ? userEvent.registered : false;
 };
@@ -123,12 +122,60 @@ export const deBookmarkEvent = async (userId, eventId) => {
   }
 
   export const updateRatings = async (userId, eventId, rating) => {
-    const event = await model.findOneAndUpdate(
-    { eventId, userId },
-    { $set: { rating: rating } },
-    // { new: true }
-  );
+    console.log("Ratinggggg", rating);
+    try {
+      const isregistered = await isUserRegisteredForEvent(userId, eventId);
+  
+      if (!isregistered) {
+        await model.create({
+          userId,
+          eventId,
+          registered: false,
+          bookmarked: false,
+          userRating: rating,
+        });
+      }
+      else {
+        await model.findOneAndUpdate(
+          { eventId, userId },
+          { $set: { userRating: rating } },
+          { new: true }
+        );
+      }
+      const userratinglater = await getUserRating(userId, eventId);
+      console.log("user rating in dao",userratinglater);
+      return userratinglater;
+    } catch (error) {
+      console.error('Error bookmarking user for event:', error);
+      throw error;
+    }
+    
   };
+
+  export const getUserRating = async (userId, eventId) => {
+    const userRating = await model.findOne({ userId, eventId });
+    return userRating ? userRating.userRating : '';
+  };
+
+  export const getOverallRating = async (eventId) => {
+    const eventsWithSameId = await model.find({ eventId });
+    
+    if (eventsWithSameId.length === 0) {
+      return 0; // No events with the specified eventId
+    }
+  
+    const ratedEvents = eventsWithSameId.filter((event) => event.userRating > 0);
+  
+    if (ratedEvents.length === 0) {
+      return 0; // No rated events
+    }
+  
+    const totalRating = ratedEvents.reduce((sum, event) => sum + event.userRating, 0);
+    const overallRating = totalRating / ratedEvents.length;
+  
+    return overallRating;
+  };
+
 
 
 
