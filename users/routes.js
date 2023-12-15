@@ -54,7 +54,6 @@ function UserRoutes(app) {
     const { username, password } = req.body;
     // console.log("SIGNINuss", username)
     const currentUser = await dao.findUserByCredentials(username, password);
-    //console.log("SIGNIN", currentUser.username);
     req.session["currentUser"] = currentUser;
     if (currentUser && currentUser.role && currentUser.role == "user") {
       //  console.log("SIGNIN",currentUser.username)
@@ -75,7 +74,6 @@ function UserRoutes(app) {
     const currentUser = await dao.findUserByCredentials(username, password);
     //console.log("snighdhaBose4",currentUser)
     req.session["currentUser"] = currentUser;
-    //console.log("SIGNIN", currentUser.username);
     if (currentUser && currentUser.role && currentUser.role == "organizer") {
       //console.log("snighdhaBose5",currentUser.role)
       res.json(currentUser);
@@ -124,11 +122,12 @@ function UserRoutes(app) {
   //trying to get data into profile page
   const fetchCurrentUserData = async (req, res) => {
     const { userid } = req.body;
-   // console.log("**", req.body.userid);
-    const user = await dao.findUserById(req.body.userid);
+  //  console.log("**", req.body.userid);
+   const user = await dao.findUserById(req.body.userid);
     // console.log(user);
-    res.json(user);
-  // res.json(req.session['currentUser']);
+   res.json(user);
+  //  console.log("session ", req.session['currentUser']);
+  //  res.json(req.session['currentUser']);
   };
   app.post("/api/users/currentUser", fetchCurrentUserData);
 }
