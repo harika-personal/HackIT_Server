@@ -110,14 +110,31 @@ function UserEventRoutes(app) {
   app.put("/api/userevents/:userId/:eventId/debookmark", deBookmarkEvent);
 
   const updateRatings = async (req, res) => {
-const { userId, eventId } = req.params;
+    const { userId, eventId } = req.params;
+    console.log("heyy",req)
     const { rating } = req.body;
+    console.log("user rating",userId,eventId,rating);
     const result = await dao.updateRatings(userId, eventId, rating);
+    //console.log("user rating",result);
     res.json(result);
   };
   app.put("/api/userevents/:userId/:eventId/ratings", updateRatings);
 
 
+  const getUserRating = async (req, res) => {
+    const { userId, eventId } = req.params;
+    const rating = await dao.getUserRating(userId, eventId);
+    res.json(rating);
+  }
+  app.get("/api/userevents/:userId/:eventId/getrating", getUserRating);
+
+  const getOverallRating = async (req, res) => {
+    const { userId, eventId } = req.params;
+    const rating = await dao.getOverallRating(eventId);
+    res.json(rating);
+  }
+  app.get("/api/userevents/:userId/:eventId/overallrating", getOverallRating);
 }
+
 
 export default UserEventRoutes;
