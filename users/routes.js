@@ -124,10 +124,10 @@ function UserRoutes(app) {
 
     const { userid } = req.body;
    // console.log("**", req.body.userid);
-  //  const user = await dao.findUserById(req.body.userid);
+   const user = await dao.findUserById(req.body.userid);
     // console.log(user);
-   // res.json(user);
-   res.json(req.session['currentUser']);
+    res.json(user);
+  // res.json(req.session['currentUser']);
   };
   app.post("/api/users/currentUser", fetchCurrentUserData);
 
