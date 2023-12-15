@@ -25,10 +25,6 @@ function EventRoutes(app) {
   };
 
   app.get("/api/events/organizer/:organizerId", findOrganizerEvents);
-
-//   app.get("/api/events/organizer/:organizerId", findOrganizerEvents);
-
-// app.get("/api/events/organizer/:organizerId", findOrganizerEvents);
   
 
   const findEventById = async (req, res) => {
