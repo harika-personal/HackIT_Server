@@ -54,7 +54,7 @@ function UserRoutes(app) {
     const { username, password } = req.body;
     // console.log("SIGNINuss", username)
     const currentUser = await dao.findUserByCredentials(username, password);
-    console.log("SIGNIN", currentUser.username);
+    //console.log("SIGNIN", currentUser.username);
     req.session["currentUser"] = currentUser;
     if (currentUser && currentUser.role && currentUser.role == "user") {
       //  console.log("SIGNIN",currentUser.username)
@@ -75,7 +75,7 @@ function UserRoutes(app) {
     const currentUser = await dao.findUserByCredentials(username, password);
     //console.log("snighdhaBose4",currentUser)
     req.session["currentUser"] = currentUser;
-    console.log("SIGNIN", currentUser.username);
+    //console.log("SIGNIN", currentUser.username);
     if (currentUser && currentUser.role && currentUser.role == "organizer") {
       //console.log("snighdhaBose5",currentUser.role)
       res.json(currentUser);
