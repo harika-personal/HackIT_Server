@@ -30,5 +30,8 @@ export const deleteEvent = (eventId) => model.deleteOne({ _id: eventId });
 
 export const findAllOrganizerEvents = (organizerId) => model.find(organizerId);
 
+export const updateEvent = (eventId, event) =>
+  model.updateOne({ _id: eventId }, { $set: event });
 
-  
+
+

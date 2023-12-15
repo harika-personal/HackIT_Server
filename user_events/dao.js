@@ -122,6 +122,14 @@ export const deBookmarkEvent = async (userId, eventId) => {
     return combinedEvents;
   }
 
+  export const updateRatings = async (userId, eventId, rating) => {
+    const event = await model.findOneAndUpdate(
+    { eventId, userId },
+    { $set: { rating: rating } },
+    // { new: true }
+  );
+  };
+
 
 
 
